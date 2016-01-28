@@ -95,8 +95,8 @@ class DockerngTestCase(TestCase):
             mine_send.assert_called_with('dockerng.ps', verbose=True, all=True,
                                          host=True)
 
-    @skipIf(_docker_py_version() < (1, 4, 0),
-            'docker module must be installed to run this test or is too old. >=1.4.0')
+    @skipIf(_docker_py_version() < (1, 6, 0),
+            'docker module must be installed to run this test or is too old. >=1.6.0')
     @patch.object(dockerng_mod, 'images', MagicMock())
     @patch.object(dockerng_mod, 'inspect_image')
     @patch.object(dockerng_mod, 'version', Mock(return_value={'ApiVersion': '1.19'}))
@@ -137,7 +137,7 @@ class DockerngTestCase(TestCase):
             'config.get': Mock(),
             'mine.send': Mock(),
         }
-        host_config = {'PublishAllPorts': True}
+        host_config = {'PublishAllPorts': True, 'Cpuset': 0, 'Memory': '1G'}
         client = Mock()
         client.api_version = '1.19'
         client.create_host_config.return_value = host_config
